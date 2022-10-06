@@ -1,10 +1,13 @@
-﻿using System;
+﻿using ModelLayer;
+using RepositoryLayer.Entity;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace RepositoryLayer.Interface
 {
-    internal class IUserRL
+    public interface IUserRL
     {
+        public UserEntity Registration(UserModel userModel);
     }
 }
