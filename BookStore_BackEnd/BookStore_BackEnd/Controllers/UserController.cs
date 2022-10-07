@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using ModelLayer;
 using System;
+using System.Net.Http;
 
 namespace BookStore_BackEnd.Controllers
 {
@@ -30,6 +31,25 @@ namespace BookStore_BackEnd.Controllers
                 return BadRequest(new {success = false, mesage = "Failed To Register"});
             }
             catch(System.Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public IActionResult Login(UserLoginModel userLoginModel)
+        {
+            try
+            {
+                var result = this.userBL.Login(userLoginModel);
+                if(result != null)
+                {
+                    return Ok(new { success = true, message = "Logged in Successfully", data = result });
+                }
+                return BadRequest(new { success = false, message = " Loggin Failed" });
+            }
+            catch
             {
                 throw;
             }

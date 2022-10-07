@@ -27,5 +27,16 @@ namespace BusinessLayer.Service
                throw;
             }
         }
+        public string Login(UserLoginModel userLoginModel)
+        {
+            try
+            {
+                return this.iUserRL.Login(userLoginModel);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
