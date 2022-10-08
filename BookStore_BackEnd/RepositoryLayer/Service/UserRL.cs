@@ -33,7 +33,7 @@ namespace RepositoryLayer.Service
                     UserEntity userEntity = new UserEntity();
                     userEntity.FullName = userModel.FullName;
                     userEntity.Email = userModel.Email;
-                    userEntity.Password = userModel.Password;
+                    userEntity.Password = CommonMethods.ConvertToEncrypt(userModel.Password);
                     userEntity.Phone = userModel.Phone;
                     bookStoreContext.Users.Add(userEntity);
                     int result = bookStoreContext.SaveChanges();
@@ -54,11 +54,15 @@ namespace RepositoryLayer.Service
         {
             try
             {
-                var findUser = this.bookStoreContext.Users.Where(e => e.Email == userLoginModel.Email && e.Password == userLoginModel.Password).FirstOrDefault();
+                var findUser = this.bookStoreContext.Users.Where(e => e.Email == userLoginModel.Email ).FirstOrDefault();
                 if(findUser != null)
                 {
-                    var token = GenerateSecurityToken(findUser.Email, findUser.UserId);
-                    return token;
+                    var decryptPassword = CommonMethods.ConvertToDecrypt(findUser.Password);
+                    if (decryptPassword == userLoginModel.Password)
+                    {
+                        var token = GenerateSecurityToken(findUser.Email, findUser.UserId);
+                        return token;
+                    }
                 }
                 return null;
             }
