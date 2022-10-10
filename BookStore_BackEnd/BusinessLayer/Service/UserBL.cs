@@ -38,5 +38,16 @@ namespace BusinessLayer.Service
                 throw;
             }
         }
+        public bool ResetPassord(string email)
+        {
+            try
+            {
+                return iUserRL.ResetPassord(email);
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

@@ -92,5 +92,25 @@ namespace RepositoryLayer.Service
 
             return tokenHandler.WriteToken(token);
         }
+
+        public bool ResetPassord(string email)
+        {
+            try
+            {
+                var checkEmail = this.bookStoreContext.Users.Where(e => e.Email == email).FirstOrDefault();
+                if(checkEmail != null)
+                {
+                    var token = GenerateSecurityToken(checkEmail.Email, checkEmail.UserId);
+                    CommonMethods methods = new CommonMethods();
+                    methods.sendDatatoQueue(token);
+                    return true;
+                }
+                return false;
+            }
+            catch(Exception e)
+            {
+                throw new Exception( e.Message);
+            }
+        }
     }
 }

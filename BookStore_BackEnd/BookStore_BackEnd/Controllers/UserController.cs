@@ -54,5 +54,23 @@ namespace BookStore_BackEnd.Controllers
                 throw;
             }
         }
+        [HttpPost]
+        [Route("reset")]
+        public IActionResult Reset(string email)
+        {
+            try
+            {
+                var result = userBL.ResetPassord(email);
+                if(result != false)
+                {
+                    return Ok(new { success = true, meaasge = "Reset Link Shared" });
+                }
+                return BadRequest(new { success = false, message = "Password Reset Failed" });
+            }
+            catch(System.Exception)
+            {
+                throw;
+            }
+        }
     }
 }
