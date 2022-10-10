@@ -47,7 +47,8 @@ namespace ModelLayer
         {
             var msg = messageQueue.EndReceive(e.AsyncResult);
             string Token = msg.Body.ToString();
-            string url = $"Fundoo Notes Reset Password: <a href=http://localhost:4200/reset/{Token}> Click Here</a>";
+            //string url = $"Fundoo Notes Reset Password: <a href=https://localhost:44378/api/User/resetPasssword/{Token}> Click Here</a>";
+            // Above line For Front End Reset Password Page
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("nantha.test123@gmail.com");
             mail.To.Add("nantha.test123@gmail.com");
@@ -58,7 +59,8 @@ namespace ModelLayer
             mail.Subject = "FundooNote Reset Link";
             mail.Body = "<body><p>Dear Nantha,<br><br>" +
                 "We have sent you a link for resetting your password.<br>" +
-                "Please copy it and paste in your swagger authorization.</body>" + url;
+                "Please copy it and paste in your swagger authorization.</body>" + Token;
+            // above also Token Replace With Url For Front End
 
            
 

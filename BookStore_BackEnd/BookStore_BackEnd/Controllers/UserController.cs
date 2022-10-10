@@ -1,15 +1,17 @@
 ﻿using BusinessLayer.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using ModelLayer;
 using System;
 using System.Net.Http;
+using System.Security.Claims;
 
 namespace BookStore_BackEnd.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserBL userBL;
@@ -66,6 +68,27 @@ namespace BookStore_BackEnd.Controllers
                     return Ok(new { success = true, meaasge = "Reset Link Shared" });
                 }
                 return BadRequest(new { success = false, message = "Password Reset Failed" });
+            }
+            catch(System.Exception)
+            {
+                throw;
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("resetPasssword")]
+        public IActionResult PasswordReset(string password, string confirmPassword)
+        {
+            try
+            {
+                string email = User.FindFirst(ClaimTypes.Email).Value.ToString();
+                var result = userBL.PasswordReset(email, password, confirmPassword);
+                if(result != null)
+                {
+                    return Ok(new { success = true, message = "Password Reset Succesful", data = result });
+                }
+                return BadRequest(new { success = false, message = "Failed To Reset Password" });
             }
             catch(System.Exception)
             {

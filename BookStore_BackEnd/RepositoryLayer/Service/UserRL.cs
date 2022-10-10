@@ -112,5 +112,28 @@ namespace RepositoryLayer.Service
                 throw new Exception( e.Message);
             }
         }
+
+        public string PasswordReset(string email, string password, string confirmPassword)
+        {
+            try
+            {
+                if (password == confirmPassword)
+                {
+                    var getData = this.bookStoreContext.Users.Where(e => e.Email == email).FirstOrDefault();
+                    if (getData != null)
+                    {
+                        getData.Password = CommonMethods.ConvertToEncrypt(password);
+                        this.bookStoreContext.SaveChanges();
+                        return getData.ToString();
+                    }
+                    return null;
+                }
+                return null;
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
